@@ -1,0 +1,29 @@
+---
+# Ansible role to install jenkins
+- name: install dependencies
+  yum: 
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - epel-release
+    - java-1.8.0-openjdk.x86_64
+
+- name: set java home as environment variable
+  blockinfile:
+    insertafter: EOF
+    path: /etc/profile
+    block: | 
+      export JAVA_HOME=/usr/lib/jvm/jre-1.8.0-openjdk
+      export JRE_HOME=/usr/lib/jvm/jre
+
+- name: Ensure Jenkins Repository is Installed
+  yum_repository:
+    name: jenkins
+    state: present
+    description: Official Jenkins Yum Repo
+    baseurl: http://pkg.jenkins.io/redhat-stable
+    gpgkey:  https://pkg.jenkins.io/redhat-stable/jenkins.io.key 
+    gpgcheck: yes
+    enabled: yes
+   
+ 

@@ -1,0 +1,20 @@
+- name: Ensure Jenkins is Installed
+  yum :
+    name: jenkins
+    update_cache: yes
+    state: present
+- name: Enable and Start the Jenkins Service
+  service: 
+    name: jenkins
+    enabled: yes
+    state: started
+- name: Ensure nginx is Installed
+  yum :
+    name: nginx
+    state: present
+- name: Enable and Start the Nginx Service
+  service:
+    name: nginx 
+    enabled: yes
+    state: started
+
