@@ -1,0 +1,47 @@
+---
+- name: install httpd package
+  apt: name=apache2 state=latest
+
+- name: Copy apache2 configuration file
+  copy: src=files/apache2.conf dest=/etc/apache2/
+
+- name: Copy default.conf file
+  copy: src=files/000-default.conf dest=/etc/apache2/sites-enabled
+
+- name: Copy index.html file
+  copy: src=files/index.html dest=/var/www/html
+  notify: 
+  - restart apache
+
+- name: start and enable apache service 
+  service: name=apache2 state=restarted enabled=yes 
+
+- name: install php dependencies packages
+  apt: name=software-properties-common
+
+- name: "Repo PHP 7.x"
+  apt_repository:
+     repo="ppa:ondrej/php"
+
+- name: "Updating the repo"
+  apt: update_cache=yes
+
+- name: Installaion PHP 7.x
+  apt: name=php7.4 state=present
+
+- name: install lamp stack
+  apt:
+    pkg:
+      - php7.4-mysql
+      - php7.4-curl
+      - php7.4-json
+      - php7.4-cgi
+      - php7.4-xsl
+      - php7.4-gd
+      - php7.4-mbstring
+      - php7.4-zip
+      - php7.4-xmlrpc
+      - php7.4-soap
+      - php7.4-intl
+    state: present
+    update_cache: yes  

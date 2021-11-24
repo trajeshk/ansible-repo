@@ -1,0 +1,18 @@
+- name: install docker package with dependencies
+  apt: 
+    deb: "{{ item }}" 
+  with_items:
+    - /home/devops/containerd.io_1.4.6-1_amd64.deb
+    - /home/devops/docker-ce_20.10.7~3-0~ubuntu-xenial_amd64.deb
+    - /home/devops/docker-ce-cli_20.10.7~3-0~ubuntu-xenial_amd64.deb
+    - /home/devops/docker-ce-rootless-extras_20.10.7~3-0~ubuntu-xenial_amd64.deb
+    - /home/devops/docker-scan-plugin_0.8.0~ubuntu-xenial_amd64.deb
+- name: install docker-compose
+  copy: src=files/docker-compose dest=/usr/local/bin/docker-compose
+- name: change file ownership, group and permission
+  file:
+    path: /usr/local/bin/docker-compose
+    owner: root
+    group: root
+    mode: '0755'
+  
